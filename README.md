@@ -1,4 +1,4 @@
-# Docker образ для MapStore 2
+# Docker образ для MapStore 2 (using DockerHub)
 
 ## Описание
 
