@@ -5,9 +5,7 @@ networks:
 
 services:
   postgres:
-    build:
-      context: ./docker/postgres/
-    image: mapstore/postgis
+    image: rogalik/postgres
     container_name: postgres_mapstore
     restart: on-failure
     healthcheck:
@@ -27,12 +25,7 @@ services:
       - mapstore-network
 
   mapstore:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        OVR: "geostore-datasource-ovr.properties"
-        MAPSTORE_WEBAPP_SRC: "mapstore.war"
+    image: rogalik/mapstore
     container_name: mapstore
     command: [ "wait-for-postgres", "postgres", "5432", "postgres", "postgres", "catalina.sh", "run" ]
     depends_on:
@@ -43,7 +36,7 @@ services:
       - mapstore-network
 
   proxy:
-    image: nginx
+    image: rogalik/nginx
     container_name: proxy
     volumes:
       - ./docker/mapstore.conf:/etc/nginx/conf.d/default.conf:rw
@@ -55,13 +48,8 @@ services:
       - mapstore-network
   
   geoserver:
+    image: rogalik/geoserver
     container_name: geoserver
-    build:
-      context: ./geoserver
-      args:
-        - GEOSERVER_VERSION=2.24.1
-        - CORS_ENABLED=true
-        - CORS_ALLOWED_METHODS=GET,POST,PUT,HEAD,OPTIONS
     ports:
       - "8085:8080"
     environment:
@@ -87,7 +75,7 @@ services:
       - mapstore-network
 
   postgis:
-    image: postgis/postgis:16-3.4-alpine
+    image: rogalik/postgis
     ports:
       - "5555:5432"
     container_name: postgres_geoserver
