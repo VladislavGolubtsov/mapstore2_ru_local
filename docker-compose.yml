@@ -95,7 +95,7 @@ services:
       POSTGRES_USER: geoserver
       POSTGRES_PASSWORD: geoserver
     volumes:
-      - ./geoserver/postgis/postgresql_data:/var/lib/postgresql/data:Z
+      - ./postgis/postgresql_data:/var/lib/postgresql/data:Z
     healthcheck:
       test: pg_isready -U geoserver -h localhost -t 5 || exit 1
       interval: 10s
