@@ -1,4 +1,4 @@
-# Docker образ для MapStore 2
+# Docker образ для MapStore 2 (Local)
 
 ## Описание
 
@@ -10,7 +10,7 @@
 
 - Склонируйте репозиторий:
     ```commandline
-    git clone -b docker_compose https://github.com/VladislavGolubtsov/mapstore2_ru_local.git
+    git clone https://github.com/VladislavGolubtsov/mapstore2_ru_local.git
     ```
 - Перейдите в папку репозитория:
     ```commandline
