@@ -24,7 +24,7 @@ services:
     ports:
       - 5434:5432
     networks:
-      - mapstore
+      - mapstore-network
 
   mapstore:
     build:
@@ -40,7 +40,7 @@ services:
     ports:
       - 8080
     networks:
-      - mapstore
+      - mapstore-network
 
   proxy:
     image: nginx
@@ -52,7 +52,7 @@ services:
     depends_on:
       - mapstore
     networks:
-      - mapstore
+      - mapstore-network
   
   geoserver:
     container_name: geoserver
@@ -84,7 +84,7 @@ services:
       retries: 3
       timeout: 20s
     networks:
-      - mapstore
+      - mapstore-network
 
   postgis:
     image: postgis/postgis:16-3.4-alpine
@@ -95,14 +95,14 @@ services:
       POSTGRES_USER: geoserver
       POSTGRES_PASSWORD: geoserver
     volumes:
-      - ./postgis/postgresql_data:/var/lib/postgresql/data:Z
+      - ./geoserver/postgis/postgresql_data:/var/lib/postgresql/data:Z
     healthcheck:
       test: pg_isready -U geoserver -h localhost -t 5 || exit 1
       interval: 10s
       retries: 5
       timeout: 10s
     networks:
-      - mapstore
+      - mapstore-network
 
 volumes:
   pg_data:
