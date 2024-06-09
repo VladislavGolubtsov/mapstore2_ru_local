@@ -30,7 +30,7 @@ COPY --from=mother "/mapstore/docker" "${CATALINA_BASE}/docker/"
 RUN mkdir -p ${DATA_DIR}
 
 # Check if the wait-for-postgres.sh script exists
-RUN ls -la /mapstore/docker/
+RUN ls -la ./docker/
 
 # Copy the wait-for-postgres script and ensure it's executable
 RUN cp ${CATALINA_BASE}/docker/wait-for-postgres.sh /usr/bin/wait-for-postgres && \
