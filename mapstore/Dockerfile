@@ -28,9 +28,9 @@ COPY --from=mother "/mapstore/docker" "${CATALINA_BASE}/docker/"
 RUN mkdir -p ${DATA_DIR}
 
 
-RUN cp ${CATALINA_BASE}/docker/wait-for-postgres.sh /usr/bin/wait-for-postgres
-
-RUN ls -la /usr/bin
+RUN cp ${CATALINA_BASE}/docker/wait-for-postgres.sh /usr/bin/wait-for-postgres && \
+    chmod +x /usr/bin/wait-for-postgres && \
+    ls -la /usr/bin/wait-for-postgres
 
 
 
