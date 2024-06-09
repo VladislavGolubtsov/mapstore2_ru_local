@@ -3,6 +3,7 @@ LABEL maintainer="SGUGIT_GEO"
 ARG MAPSTORE_WEBAPP_SRC="./mapstore.war"
 ADD "${MAPSTORE_WEBAPP_SRC}" "/mapstore/"
 
+# Copy all files from the local docker directory to the /mapstore/docker directory in the container
 COPY ./docker/* /mapstore/docker/
 WORKDIR /mapstore
 
@@ -22,18 +23,21 @@ ENV GEOSTORE_OVR_OPT=""
 ENV JAVA_OPTS="${JAVA_OPTS} ${GEOSTORE_OVR_OPT} -Ddatadir.location=${DATA_DIR}"
 ENV TERM xterm
 
+# Copy the webapp and docker directory from the mother stage
 COPY --from=mother "/mapstore/mapstore.war" "${MAPSTORE_WEBAPP_DST}/mapstore.war"
 COPY --from=mother "/mapstore/docker" "${CATALINA_BASE}/docker/"
 
 RUN mkdir -p ${DATA_DIR}
 
+# Check if the wait-for-postgres.sh script exists
+RUN ls -la /mapstore/docker/
 
+# Copy the wait-for-postgres script and ensure it's executable
 RUN cp ${CATALINA_BASE}/docker/wait-for-postgres.sh /usr/bin/wait-for-postgres && \
     chmod +x /usr/bin/wait-for-postgres && \
     ls -la /usr/bin/wait-for-postgres
 
-
-
+# Install PostgreSQL client
 RUN apt-get update \
     && apt-get install --yes postgresql-client \
     && apt-get clean \
